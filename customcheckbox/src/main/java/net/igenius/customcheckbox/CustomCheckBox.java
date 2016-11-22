@@ -41,6 +41,7 @@ public class CustomCheckBox extends View implements Checkable {
     private float mLeftLineDistance, mRightLineDistance, mDrewDistance;
     private float mScaleVal = 1.0f, mFloorScale = 1.0f;
     private int mWidth, mAnimDuration, mStrokeWidth;
+    private int mTickColor = Color.WHITE;
     private int mCheckedColor, mUnCheckedColor, mFloorColor, mFloorUnCheckedColor;
 
     private boolean mChecked;
@@ -69,7 +70,7 @@ public class CustomCheckBox extends View implements Checkable {
     private void init(AttributeSet attrs) {
 
         TypedArray ta = getContext().obtainStyledAttributes(attrs, R.styleable.CustomCheckBox);
-        int tickColor = ta.getColor(R.styleable.CustomCheckBox_color_tick, COLOR_TICK);
+        mTickColor = ta.getColor(R.styleable.CustomCheckBox_color_tick, COLOR_TICK);
         mAnimDuration = ta.getInt(R.styleable.CustomCheckBox_duration, DEF_ANIM_DURATION);
         mFloorColor = ta.getColor(R.styleable.CustomCheckBox_color_unchecked_stroke, COLOR_FLOOR_UNCHECKED);
         mCheckedColor = ta.getColor(R.styleable.CustomCheckBox_color_checked, COLOR_CHECKED);
@@ -81,7 +82,7 @@ public class CustomCheckBox extends View implements Checkable {
         mTickPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mTickPaint.setStyle(Paint.Style.STROKE);
         mTickPaint.setStrokeCap(Paint.Cap.ROUND);
-        mTickPaint.setColor(tickColor);
+        mTickPaint.setColor(mTickColor);
 
         mFloorPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mFloorPaint.setStyle(Paint.Style.FILL);
@@ -392,6 +393,26 @@ public class CustomCheckBox extends View implements Checkable {
         int currentG = (int) (startG * (1 - percent) + endG * percent);
         int currentB = (int) (startB * (1 - percent) + endB * percent);
         return Color.argb(currentA, currentR, currentG, currentB);
+    }
+
+    public void setColorTick(int color){
+        mTickColor = color;
+    }
+
+    public void setUnCheckedColor(int unCheckedColor) {
+        this.mUnCheckedColor = unCheckedColor;
+    }
+
+    public void setCheckedColor(int checkedColor) {
+        this.mCheckedColor = checkedColor;
+    }
+
+    public void setFloorColor(int floorColor) {
+        this.mFloorColor = floorColor;
+    }
+
+    public void setFloorUnCheckedColor(int floorUnCheckedColor) {
+        this.mFloorUnCheckedColor = floorUnCheckedColor;
     }
 
     public void setOnCheckedChangeListener(OnCheckedChangeListener l) {

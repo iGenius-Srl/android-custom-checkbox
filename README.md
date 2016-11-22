@@ -11,7 +11,7 @@ repositories {
     }
 }
 
-compile 'net.igenius:customcheckbox:1.0'
+compile 'net.igenius:customcheckbox:1.1'
 ```
 
 ## Attrs
