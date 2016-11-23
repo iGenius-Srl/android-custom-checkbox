@@ -19,7 +19,7 @@ def projectLicenseUrl = "http://www.apache.org/licenses/LICENSE-2.0.txt"
 def projectKeywords = ['android', 'custom', 'checkbox']
 def developerFullName = "iGenius"
 group = projectGroup
-version = "1.0"
+version = "1.1"
 
 def sdkVersion = 24;
 def toolsVersion = "24.0.3";
@@ -30,7 +30,7 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion sdkVersion
-        versionCode 1
+        versionCode 2
         versionName version
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
