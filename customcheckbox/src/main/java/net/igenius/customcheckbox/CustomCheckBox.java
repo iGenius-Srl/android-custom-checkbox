@@ -444,7 +444,7 @@ public class CustomCheckBox extends View implements Checkable {
         return Color.argb(currentA, currentR, currentG, currentB);
     }
 
-    public void setColorTick(int color) {
+    public void setTickColor(int color) {
         mTickColor = color;
     }
 
