@@ -19,6 +19,7 @@ import android.widget.Checkable;
 
 /**
  * Forked from https://github.com/andyxialm/SmoothCheckBox/blob/master/library/src/main/java/cn/refactor/library/SmoothCheckBox.java
+ *
  * @author andyxialm
  */
 public class CustomCheckBox extends View implements Checkable {
@@ -47,6 +48,7 @@ public class CustomCheckBox extends View implements Checkable {
     private boolean mChecked;
     private boolean mTickDrawing;
     private OnCheckedChangeListener mListener;
+    private boolean mSmallTick;
 
     public CustomCheckBox(Context context) {
         this(context, null);
@@ -76,6 +78,7 @@ public class CustomCheckBox extends View implements Checkable {
         mCheckedColor = ta.getColor(R.styleable.CustomCheckBox_color_checked, COLOR_CHECKED);
         mUnCheckedColor = ta.getColor(R.styleable.CustomCheckBox_color_unchecked, COLOR_UNCHECKED);
         mStrokeWidth = ta.getDimensionPixelSize(R.styleable.CustomCheckBox_stroke_width, dp2px(getContext(), 0));
+        mSmallTick = ta.getBoolean(R.styleable.CustomCheckBox_small_tick, false);
         ta.recycle();
 
         mFloorUnCheckedColor = mFloorColor;
@@ -156,6 +159,7 @@ public class CustomCheckBox extends View implements Checkable {
 
     /**
      * checked with animation
+     *
      * @param checked checked
      * @param animate change with animation
      */
@@ -176,6 +180,14 @@ public class CustomCheckBox extends View implements Checkable {
         } else {
             this.setChecked(checked);
         }
+    }
+
+    public boolean isSmallTick() {
+        return mSmallTick;
+    }
+
+    public void setSmallTick(boolean small) {
+        mSmallTick = small;
     }
 
     private void reset() {
@@ -228,19 +240,40 @@ public class CustomCheckBox extends View implements Checkable {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         mWidth = getMeasuredWidth();
-        mStrokeWidth =  getMeasuredWidth() / 30 ;
+        final int totalPoints;
+        if (mSmallTick) {
+            totalPoints = 30;
+        } else {
+            totalPoints = 11;
+        }
+        mStrokeWidth = getMeasuredWidth() / totalPoints;
 
         mCenterPoint.x = mWidth / 2;
         mCenterPoint.y = getMeasuredHeight() / 2;
 
-        mTickPoints[0].x = Math.round((float) getMeasuredWidth() / 30 * 11);
-        mTickPoints[0].y = Math.round((float) getMeasuredHeight() / 30 * 15);
+        float widthUnity = (float) getMeasuredWidth() / totalPoints;
+        float heightUnity = (float) getMeasuredHeight() / totalPoints;
 
-        mTickPoints[1].x = Math.round((float) getMeasuredWidth() / 30 * 14);
-        mTickPoints[1].y = Math.round((float) getMeasuredHeight() / 30 * 18);
+        if (mSmallTick) {
+            mTickPoints[0].x = Math.round(widthUnity * 11);
+            mTickPoints[0].y = Math.round(heightUnity * 15);
 
-        mTickPoints[2].x = Math.round((float) getMeasuredWidth() / 30 * 20);
-        mTickPoints[2].y = Math.round((float) getMeasuredHeight() / 30 * 13);
+            mTickPoints[1].x = Math.round(widthUnity * 14);
+            mTickPoints[1].y = Math.round(heightUnity * 18);
+
+            mTickPoints[2].x = Math.round(widthUnity * 20);
+            mTickPoints[2].y = Math.round(heightUnity * 13);
+
+        } else {
+            mTickPoints[0].x = Math.round(widthUnity * 1);
+            mTickPoints[0].y = Math.round(heightUnity * 5);
+
+            mTickPoints[1].x = Math.round(widthUnity * 4);
+            mTickPoints[1].y = Math.round(heightUnity * 8);
+
+            mTickPoints[2].x = Math.round(widthUnity * 10);
+            mTickPoints[2].y = Math.round(heightUnity * 3);
+        }
 
         mLeftLineDistance = (float) Math.sqrt(Math.pow(mTickPoints[1].x - mTickPoints[0].x, 2) +
                 Math.pow(mTickPoints[1].y - mTickPoints[0].y, 2));
@@ -411,7 +444,7 @@ public class CustomCheckBox extends View implements Checkable {
         return Color.argb(currentA, currentR, currentG, currentB);
     }
 
-    public void setColorTick(int color){
+    public void setColorTick(int color) {
         mTickColor = color;
     }
 

@@ -15,5 +15,6 @@
         android:layout_height="20dp"
         app:color_checked="@android:color/transparent"
         app:color_tick="@color/colorPrimary"
-        app:color_unchecked_stroke="@color/colorAccent" />
+        app:color_unchecked_stroke="@color/colorAccent"
+        app:small_tick="false"/>
 </RelativeLayout>
