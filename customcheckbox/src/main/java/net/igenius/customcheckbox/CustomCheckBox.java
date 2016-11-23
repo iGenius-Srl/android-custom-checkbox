@@ -446,6 +446,7 @@ public class CustomCheckBox extends View implements Checkable {
 
     public void setTickColor(int color) {
         mTickColor = color;
+        mTickPaint.setColor(mTickColor);
     }
 
     public void setUnCheckedColor(int unCheckedColor) {

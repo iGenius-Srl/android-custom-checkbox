@@ -2,7 +2,7 @@
 Android custom checkbox based on [SmoothCheckBox](https://github.com/andyxialm/SmoothCheckBox)
 
 ```groovy
-compile 'net.igenius:customcheckbox:1.2'
+compile 'net.igenius:customcheckbox:1.3'
 ```
 
 ![](https://github.com/iGenius-Srl/android-custom-checkbox/blob/master/assets/smoothcb.gif?raw=true)
