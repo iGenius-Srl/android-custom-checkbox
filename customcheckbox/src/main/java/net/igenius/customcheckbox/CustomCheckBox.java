@@ -22,6 +22,7 @@ import android.widget.Checkable;
  * @author andyxialm
  */
 public class CustomCheckBox extends View implements Checkable {
+
     private static final String KEY_INSTANCE_STATE = "InstanceState";
 
     private static final int COLOR_TICK = Color.WHITE;
@@ -29,14 +30,13 @@ public class CustomCheckBox extends View implements Checkable {
     private static final int COLOR_CHECKED = Color.parseColor("#FB4846");
     private static final int COLOR_FLOOR_UNCHECKED = Color.parseColor("#DFDFDF");
 
-    private static final int DEF_DRAW_SIZE = 25;
+    private static final int DEF_DRAW_SIZE = 100;
     private static final int DEF_ANIM_DURATION = 300;
 
     private Paint mPaint, mTickPaint, mFloorPaint;
     private Point[] mTickPoints;
     private Point mCenterPoint;
     private Path mTickPath;
-
 
     private float mLeftLineDistance, mRightLineDistance, mDrewDistance;
     private float mScaleVal = 1.0f, mFloorScale = 1.0f;
@@ -81,7 +81,7 @@ public class CustomCheckBox extends View implements Checkable {
         mFloorUnCheckedColor = mFloorColor;
         mTickPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mTickPaint.setStyle(Paint.Style.STROKE);
-        mTickPaint.setStrokeCap(Paint.Cap.ROUND);
+        mTickPaint.setStrokeCap(Paint.Cap.SQUARE);
         mTickPaint.setColor(mTickColor);
 
         mFloorPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -186,45 +186,61 @@ public class CustomCheckBox extends View implements Checkable {
         mDrewDistance = isChecked() ? (mLeftLineDistance + mRightLineDistance) : 0;
     }
 
-    private int measureSize(int measureSpec) {
-        int defSize = dp2px(getContext(), DEF_DRAW_SIZE);
-        int specSize = MeasureSpec.getSize(measureSpec);
-        int specMode = MeasureSpec.getMode(measureSpec);
-
-        int result = 0;
-        switch (specMode) {
-            case MeasureSpec.UNSPECIFIED:
-            case MeasureSpec.AT_MOST:
-                result = Math.min(defSize, specSize);
-                break;
-            case MeasureSpec.EXACTLY:
-                result = specSize;
-                break;
-        }
-        return result;
-    }
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension(measureSize(widthMeasureSpec), measureSize(heightMeasureSpec));
+
+        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+
+        int width;
+        int height;
+
+        //Measure Width
+        if (widthMode == MeasureSpec.EXACTLY) {
+            //Must be this size
+            width = widthSize;
+        } else if (widthMode == MeasureSpec.AT_MOST) {
+            //Can't be bigger than...
+            width = Math.min(DEF_DRAW_SIZE, widthSize);
+        } else {
+            //Be whatever you want
+            width = DEF_DRAW_SIZE;
+        }
+
+        //Measure Height
+        if (heightMode == MeasureSpec.EXACTLY) {
+            //Must be this size
+            height = heightSize;
+        } else if (heightMode == MeasureSpec.AT_MOST) {
+            //Can't be bigger than...
+            height = Math.min(DEF_DRAW_SIZE, heightSize);
+        } else {
+            //Be whatever you want
+            height = DEF_DRAW_SIZE;
+        }
+
+        //MUST CALL THIS
+        setMeasuredDimension(width, height);
     }
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         mWidth = getMeasuredWidth();
-        mStrokeWidth = (mStrokeWidth == 0 ? getMeasuredWidth() / 10 : mStrokeWidth);
-        mStrokeWidth = mStrokeWidth > getMeasuredWidth() / 5 ? getMeasuredWidth() / 5 : mStrokeWidth;
-        mStrokeWidth = (mStrokeWidth < 3) ? 3 : mStrokeWidth;
+        mStrokeWidth =  getMeasuredWidth() / 30 ;
+
         mCenterPoint.x = mWidth / 2;
         mCenterPoint.y = getMeasuredHeight() / 2;
 
-        mTickPoints[0].x = Math.round((float) getMeasuredWidth() / 30 * 7);
-        mTickPoints[0].y = Math.round((float) getMeasuredHeight() / 30 * 14);
-        mTickPoints[1].x = Math.round((float) getMeasuredWidth() / 30 * 13);
-        mTickPoints[1].y = Math.round((float) getMeasuredHeight() / 30 * 20);
-        mTickPoints[2].x = Math.round((float) getMeasuredWidth() / 30 * 22);
-        mTickPoints[2].y = Math.round((float) getMeasuredHeight() / 30 * 10);
+        mTickPoints[0].x = Math.round((float) getMeasuredWidth() / 30 * 11);
+        mTickPoints[0].y = Math.round((float) getMeasuredHeight() / 30 * 15);
+
+        mTickPoints[1].x = Math.round((float) getMeasuredWidth() / 30 * 14);
+        mTickPoints[1].y = Math.round((float) getMeasuredHeight() / 30 * 18);
+
+        mTickPoints[2].x = Math.round((float) getMeasuredWidth() / 30 * 20);
+        mTickPoints[2].y = Math.round((float) getMeasuredHeight() / 30 * 13);
 
         mLeftLineDistance = (float) Math.sqrt(Math.pow(mTickPoints[1].x - mTickPoints[0].x, 2) +
                 Math.pow(mTickPoints[1].y - mTickPoints[0].y, 2));
@@ -413,6 +429,26 @@ public class CustomCheckBox extends View implements Checkable {
 
     public void setFloorUnCheckedColor(int floorUnCheckedColor) {
         this.mFloorUnCheckedColor = floorUnCheckedColor;
+    }
+
+    public int getTickColor() {
+        return mTickColor;
+    }
+
+    public int getCheckedColor() {
+        return mCheckedColor;
+    }
+
+    public int getUnCheckedColor() {
+        return mUnCheckedColor;
+    }
+
+    public int getFloorColor() {
+        return mFloorColor;
+    }
+
+    public int getFloorUnCheckedColor() {
+        return mFloorUnCheckedColor;
     }
 
     public void setOnCheckedChangeListener(OnCheckedChangeListener l) {
