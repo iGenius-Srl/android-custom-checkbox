@@ -1,18 +1,11 @@
 # Android Custom CheckBox
 Android custom checkbox based on [SmoothCheckBox](https://github.com/andyxialm/SmoothCheckBox)
 
-![](https://github.com/iGenius-Srl/android-custom-checkbox/blob/master/assets/smoothcb.gif?raw=true)
-
-##Setup
-```
-repositories {
-    maven {
-        url "http://dl.bintray.com/igenius-code/maven"
-    }
-}
-
+```groovy
 compile 'net.igenius:customcheckbox:1.1'
 ```
+
+![](https://github.com/iGenius-Srl/android-custom-checkbox/blob/master/assets/smoothcb.gif?raw=true)
 
 ## Attrs
 |Attr|Type|Description|
